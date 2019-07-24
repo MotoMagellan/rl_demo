@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: helloweb
+  name: helloweb-XXXXX
   labels:
-    app: hello
+    app: hello-XXXXX
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello
+      app: hello-XXXXX
       tier: web
   template:
     metadata:
       labels:
-        app: hello
+        app: hello-XXXXX
         tier: web
     spec:
       containers:
@@ -35,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helloweb
+  name: helloweb-XXXXX
 spec:
   selector:
-    app: hello
+    app: hello-XXXXX
   ports:
   - protocol: TCP
     port: 80
