@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloweb-XXXXX
+  labels:
+    app: hello-XXXXX
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-XXXXX
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: hello-XXXXX
+        tier: web
+    spec:
+      containers:
+      - name: hello-app
+        image: gcr.io/google-samples/hello-app:1.0
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            httpHeaders:
+             - name: User-Agent
+               value: "blerg"
+          initialDelaySeconds: 30
+          periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloweb-XXXXX
+spec:
+  selector:
+    app: hello-XXXXX
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
